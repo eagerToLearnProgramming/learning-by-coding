@@ -31,92 +31,85 @@ public class Algebra_Perfect_Square_11_17 {
 		Scanner scan = new Scanner(System.in);
 
 		int m = scan.nextInt();
-		boolean isPrime = isAPrimeNumber();
-		if (isPrime) {
-			System.out.println(
-					"Given number is a Prime number: " + m + ".Factorization of a prime number is not possible.");
-		} else {
-			perfectSquare(m);
+		scan.close();
 
-		}
+		ArrayList<Integer> factors = new ArrayList<>();
+		factors = factorization(m);
+
+		ArrayList<Integer> oddNumbers = findNumber(factors);
+		int n = findMultiple(oddNumbers);
+
+		System.out.println("The smallest number n for m * n to be a perfect square is " +  n 
+				+ " m (" + m + ") * " + "n(" + n + ")" + n + " is " + (m * n));
+
+		// boolean isPrime = isAPrimeNumber(m);
+		// if (isPrime) {
+		// System.out.println(
+		// "Given number is a Prime number: " + m + ".Factorization of a prime
+		// number is not possible.");
+		// } else {
+		//
+		//
+		// }
 	}
 
-	private static void perfectSquare(int m) {
-		long perfectSquare = 0L;
-		int n = 0;
-		ArrayList<Integer> factors = new ArrayList<>();
-
-		factors = factorization(m);
-		for (Iterator iterator = factors.iterator(); iterator.hasNext();) {
-			Integer integer = (Integer) iterator.next();
-			System.out.println("\n" + integer);
+	private static int findMultiple(ArrayList<Integer> oddNumbers) {
+		if (oddNumbers.size() > 0) {
+			int product = oddNumbers.get(0);
+			for (int x = 1; x < oddNumbers.size(); x++) {
+				product *= oddNumbers.get(x);
+			}
+			return product;
 		}
-		
-		
-		System.out.println("The smallest number n for m * n to be a perfect square is 7 m * n is ");
+		return -1;
+	}
 
+	private static ArrayList<Integer> findNumber(ArrayList<Integer> factors) {
+		int count = 0;
+		int number = factors.get(0);
+		ArrayList<Integer> oddTimesIntegers = new ArrayList<>();
+		int i = 0;
+		
+		while(i < factors.size()) {
+			
+			for (int j = 0; j < factors.size(); j++) {
+				if (number == factors.get(j)) {
+					count++;			
+				}
+				number = factors.get(i);
+			}			
+			if ((count % 2) == 1) {
+				oddTimesIntegers.add(number);
+			}
+			i++;
+		}
+		return oddTimesIntegers;
 	}
 
 	private static ArrayList<Integer> factorization(int m) {
 		ArrayList<Integer> factors = new ArrayList<>();
-		int x = 2;
-		while (x < m) {
-			if ((isEven(m)) && (m % x) == 0) {
-				m = (m / x);
+		for (int x = 2; x <= m; x++) {
+			while ((m % x) == 0) {
 				factors.add(x);
-			} else {
-				if ((isOdd(m)) && (m % x) == 0) {					
-					m = (m / x);
-					factors.add(x);
-				}
-			}
-			if (isEven(m)){
-				x = 2;
-			} else {
-				if(isOdd(m)){
-					x++;
-					if (isEven(x)){
-						x++;
-					}
-				}
+				m /= x;
 			}
 		}
 		return factors;
 	}
 
-	private static boolean isPrime(int m) {
-		for (int x = 1; x < m; x++) {
-			int y;
-			for (y = 2; y < x; y++) {
-				int n = (x % y);
-				if (n == 0) {
-					break;
-				}
-			}
-			if (x == y) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private static boolean isEven(int m) {
-		if ((m % 2) == 0) {
-			return true;
-		}
-		return false;
-	}
-
-	private static boolean isOdd(int m) {
-		if ((m % 2) == 1) {
-			return true;
-		}
-		return false;
-	}
-
-	private static boolean isAPrimeNumber() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+//	private static boolean isAPrimeNumber(int m) {
+//		for (int x = 1; x < m; x++) {
+//			int y;
+//			for (y = 2; y < x; y++) {
+//				int n = (x % y);
+//				if (n == 0) {
+//					break;
+//				}
+//			}
+//			if (x == y) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 }
